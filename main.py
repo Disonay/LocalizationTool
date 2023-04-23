@@ -10,6 +10,9 @@ app.include_router(localization.router)
 
 @app.get("/health")
 def health() -> str:
+    """
+    Endpoint to check if the app works
+    """
     return "App is working"
 
 
