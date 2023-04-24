@@ -1,6 +1,7 @@
 import translators.server as ts
 
-from consts.translate import NOT_TRANSLATABLE_KEYS, API_NAME
+from consts.translate import NOT_TRANSLATABLE_KEYS, API_NAME, PATTERN
+import re
 
 
 def translatable_key(key: str) -> bool:
@@ -25,8 +26,19 @@ def translate_str(source_lang: str, target_lang: str, source: str, api_name=API_
     :return: translated string
     """
     translator = getattr(ts, api_name)
+    begin_not_translated = ''
+    end_not_translated = ''
 
-    return translator(source, from_language=source_lang, to_language=target_lang)
+    if source.startswith('{') and source.endswith('}'):
+        start_translation = re.search(PATTERN, source[1:]).start() + 1
+
+        begin_not_translated = source[:start_translation]
+        translated = translator(source[start_translation:-1], from_language=source_lang, to_language=target_lang)
+        end_not_translated = source[-1]
+    else:
+        translated = translator(source, from_language=source_lang, to_language=target_lang)
+
+    return begin_not_translated + translated + end_not_translated
 
 
 def translate_dict_values(source_lang: str, target_lang: str, source: dict, api_name=API_NAME):
