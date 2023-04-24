@@ -4,3 +4,4 @@ NOT_TRANSLATABLE_KEYS = {
     "customPattern",
 }
 API_NAME = "alibaba"
+PATTERN = r"(\w+)\{[^}]+\}"
