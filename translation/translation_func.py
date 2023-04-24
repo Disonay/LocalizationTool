@@ -1,7 +1,8 @@
+import re
+
 import translators.server as ts
 
 from consts.translate import NOT_TRANSLATABLE_KEYS, API_NAME, PATTERN
-import re
 
 
 def translatable_key(key: str) -> bool:
